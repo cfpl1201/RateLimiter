@@ -4,12 +4,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dbq.common.export.account.AccountFeignService;
 import com.dbq.common.model.Account;
 import com.dbq.common.model.Order;
-import com.dbq.common.redis.RedisUtils;
 import com.dbq.common.result.PojoResult;
-import com.dbq.util.HttpUtil;
 import com.dbq.mapper.OrderMapper;
 import com.dbq.service.OrderService;
-import io.seata.spring.annotation.GlobalTransactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,20 +32,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         if (!exists) {
             LOGGER.debug("用户Id:[{}]不存在", userId);
             return null;
-        }
-
-        //测试与外部系统的连接
-        try {
-            HttpUtil.doPost("https://www.huining.info/");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        //测试与redis的连接
-        try {
-            RedisUtils.get("test");
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
         //测试Feign调用

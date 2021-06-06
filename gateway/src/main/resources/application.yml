@@ -1,0 +1,30 @@
+server:
+  port: 8765
+spring:
+  application:
+    name: spring-cloud-gateway-server
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+      routes:
+        - id: spring-cloud-order-server
+          uri: lb://spring-cloud-order-server
+          predicates:
+            - Path=/client/**
+          filters:
+            - StripPrefix=1
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${eureka.host:localhost}:${eureka.port:8761}/eureka/
+  instance:
+    prefer-ip-address: true
+
+  routes:
+    spring-cloud-user-server:
+      path: /client/**
+      serviceId: spring-cloud-order-server
